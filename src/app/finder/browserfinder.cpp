@@ -40,7 +40,8 @@ BrowserFinder::BrowserFinder(TextBrowser* browser) : AbstractFinder(browser)
     connect(browser, SIGNAL(documentChanged(TextDocument*)), this, SLOT(deleteLater()));
     connect(this, SIGNAL(returnPressed()), this, SLOT(findNext()));
 
-    QMenu *menu = new QMenu(this);
+    // FIXME: QMenu(this) breaks lineEdit refresh for some reason
+    QMenu *menu = new QMenu();
     QAction *search = menu->addAction(tr("Search"));
     search->setCheckable(true);
     search->setChecked(true);
