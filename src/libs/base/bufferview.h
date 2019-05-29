@@ -69,6 +69,7 @@ signals:
 
 protected:
     void resizeEvent(QResizeEvent* event);
+    bool eventFilter(QObject *object, QEvent *event);
 
 private:
     struct Private {

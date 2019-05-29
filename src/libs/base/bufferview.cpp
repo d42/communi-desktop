@@ -46,6 +46,7 @@ BufferView::BufferView(QWidget* parent) : QWidget(parent)
     d.titleBar = new TitleBar(this);
     d.listView = new ListView(this);
     d.textInput = new TextInput(this);
+    d.textInput->installEventFilter(this);
     d.textBrowser = new TextBrowser(this);
     d.textBrowser->setBuddy(d.textInput);
 
@@ -96,6 +97,19 @@ BufferView::BufferView(QWidget* parent) : QWidget(parent)
     connect(d.textBrowser, SIGNAL(queried(QString)), this, SLOT(openBuffer(QString)));
     connect(d.textBrowser, SIGNAL(joined(QString)), this, SLOT(openBuffer(QString)));
 }
+
+bool BufferView::eventFilter(QObject *object, QEvent *event) {
+    if(event->type() == QEvent::ShortcutOverride) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        bool CTRL_U = keyEvent->key() == Qt::Key_U && keyEvent->modifiers().testFlag(Qt::ControlModifier);
+        if(CTRL_U) {
+            event->ignore();
+            return true;
+        }
+    }
+    return false;
+}
+
 
 BufferView::~BufferView()
 {
